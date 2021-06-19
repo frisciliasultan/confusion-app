@@ -33,20 +33,8 @@ class Dishdetail extends Component {
     };
 
     render() {
-        const dishId = this.props.navigation.getParam('dishId', '');
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    paddingTop:
-                        Platform.OS === 'ios'
-                            ? 0
-                            : Expo.Constants.statusBarHeight
-                }}
-            >
-                <RenderDish dish={this.state.dishes[+dishId]} />
-            </View>
-        );
+        const dishId = this.props.route.params.dishId;
+        return <RenderDish dish={this.state.dishes[+dishId]} />;
     }
 }
 

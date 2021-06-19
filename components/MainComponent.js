@@ -23,12 +23,36 @@ class Main extends Component {
 
     render() {
         return (
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="Main">
-                    <Stack.Screen name="Menu" component={Menu} />
-                    <Stack.Screen name="Dishdetail" component={Dishdetail} />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop:
+                        Platform.OS === 'ios'
+                            ? 0
+                            : Expo.Constants.statusBarHeight
+                }}
+            >
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="Main"
+                        screenOptions={{
+                            headerStyle: {
+                                backgroundColor: '#512DA8'
+                            },
+                            headerTintColor: '#fff',
+                            headerTitleStyle: {
+                                color: '#fff'
+                            }
+                        }}
+                    >
+                        <Stack.Screen name="Menu" component={Menu} />
+                        <Stack.Screen
+                            name="Dishdetail"
+                            component={Dishdetail}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </View>
         );
     }
 }
