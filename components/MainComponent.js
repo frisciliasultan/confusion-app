@@ -1,12 +1,35 @@
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import Dishdetail from './DishDetailComponent';
+import Home from './HomeComponent';
 import { View, Platform } from 'react-native';
 import { DISHES } from '../shared/dish';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function MenuNavigator() {
+    return (
+        <Stack.Navigator
+            initialRouteName="Main"
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <Stack.Screen name="Menu" component={Menu} />
+            <Stack.Screen name="Dishdetail" component={Dishdetail} />
+        </Stack.Navigator>
+    );
+}
 
 class Main extends Component {
     constructor(props) {
@@ -33,24 +56,10 @@ class Main extends Component {
                 }}
             >
                 <NavigationContainer>
-                    <Stack.Navigator
-                        initialRouteName="Main"
-                        screenOptions={{
-                            headerStyle: {
-                                backgroundColor: '#512DA8'
-                            },
-                            headerTintColor: '#fff',
-                            headerTitleStyle: {
-                                color: '#fff'
-                            }
-                        }}
-                    >
-                        <Stack.Screen name="Menu" component={Menu} />
-                        <Stack.Screen
-                            name="Dishdetail"
-                            component={Dishdetail}
-                        />
-                    </Stack.Navigator>
+                    <Drawer.Navigator initialRouteName="Home">
+                        <Drawer.Screen name="Home" component={Home} />
+                        <Drawer.Screen name="Menu" component={MenuNavigator} />
+                    </Drawer.Navigator>
                 </NavigationContainer>
             </View>
         );
