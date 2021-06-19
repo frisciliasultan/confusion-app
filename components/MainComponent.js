@@ -31,6 +31,25 @@ function MenuNavigator() {
     );
 }
 
+function HomeNavigator() {
+    return (
+        <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <Stack.Screen name="Home" component={Home} />
+        </Stack.Navigator>
+    );
+}
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +76,7 @@ class Main extends Component {
             >
                 <NavigationContainer>
                     <Drawer.Navigator initialRouteName="Home">
-                        <Drawer.Screen name="Home" component={Home} />
+                        <Drawer.Screen name="Home" component={HomeNavigator} />
                         <Drawer.Screen name="Menu" component={MenuNavigator} />
                     </Drawer.Navigator>
                 </NavigationContainer>
