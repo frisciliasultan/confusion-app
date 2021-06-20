@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, FlatList } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Card, Avatar, ListItem } from 'react-native-elements';
 import { LEADERS } from '../shared/leaders';
 
 function History() {
@@ -35,14 +35,15 @@ class About extends Component {
     render() {
         const renderAboutItem = ({ item, index }) => {
             return (
-                <>
-                    <Card.Image
-                        source={require('./images/alberto.png')}
-                        containerStyle={{ 'border-radius': '50%' }}
-                    />
-                    <Card.Title>{item.name}</Card.Title>
-                    <Text style={{ margin: 10 }}>{item.description}</Text>
-                </>
+                <ListItem>
+                    <Avatar source={require('./images/alberto.png')} />
+                    <ListItem.Content>
+                        <ListItem.Title>{item.name}</ListItem.Title>
+                        <ListItem.Subtitle>
+                            {item.description}
+                        </ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>
             );
         };
 
