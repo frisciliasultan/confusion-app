@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import Dishdetail from './DishDetailComponent';
 import Home from './HomeComponent';
+import Contact from './ContactComponent';
 import { View, Platform } from 'react-native';
 import { DISHES } from '../shared/dish';
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,6 +51,25 @@ function HomeNavigator() {
     );
 }
 
+function ContactNavigator() {
+    return (
+        <Stack.Navigator
+            initialRouteName="Contact"
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <Stack.Screen name="Contact" component={Contact} />
+        </Stack.Navigator>
+    );
+}
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -78,6 +98,10 @@ class Main extends Component {
                     <Drawer.Navigator initialRouteName="Home">
                         <Drawer.Screen name="Home" component={HomeNavigator} />
                         <Drawer.Screen name="Menu" component={MenuNavigator} />
+                        <Drawer.Screen
+                            name="Contact"
+                            component={ContactNavigator}
+                        />
                     </Drawer.Navigator>
                 </NavigationContainer>
             </View>

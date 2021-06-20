@@ -1,67 +1,26 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
-import { DISHES } from '../shared/dish';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
 
-function RenderItem(props) {
-    const item = props.item;
-
-    if (item != null) {
-        return (
-            <Card>
-                <Card.Image source={require('./images/uthappizza.png')}>
-                    <Card.FeaturedTitle>{item.name}</Card.FeaturedTitle>
-                    <Card.FeaturedSubtitle>
-                        {item.designation}
-                    </Card.FeaturedSubtitle>
-                </Card.Image>
-                <Text style={{ margin: 10 }}>{item.description}</Text>
-            </Card>
-        );
-    } else {
-        return <View></View>;
-    }
-}
-
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dishes: DISHES,
-            promotions: PROMOTIONS,
-            leaders: LEADERS
-        };
-    }
-
-    static navigationOptions = {
-        title: 'Home'
-    };
-
+class Contact extends Component {
     render() {
         return (
             <ScrollView>
-                <RenderItem
-                    item={this.state.dishes.filter((dish) => dish.featured)[0]}
-                />
-                <RenderItem
-                    item={
-                        this.state.promotions.filter(
-                            (promo) => promo.featured
-                        )[0]
-                    }
-                />
-                <RenderItem
-                    item={
-                        this.state.leaders.filter(
-                            (leader) => leader.featured
-                        )[0]
-                    }
-                />
+                <Card>
+                    <Card.Title>Contact Information</Card.Title>
+                    <Card.Divider />
+                    <Text style={{ margin: 10 }}>
+                        121, Clear Water Bay Road
+                    </Text>
+                    <Text style={{ margin: 10 }}>Clear Water Bay, Kowloon</Text>
+                    <Text style={{ margin: 10 }}>HONG KONG</Text>
+                    <Text style={{ margin: 10 }}>Tel: +852 1234 5678</Text>
+                    <Text style={{ margin: 10 }}>Fax: +852 8765 4321</Text>
+                    <Text style={{ margin: 10 }}>Email:confusion@food.net</Text>
+                </Card>
             </ScrollView>
         );
     }
 }
 
-export default Home;
+export default Contact;
