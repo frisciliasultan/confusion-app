@@ -4,11 +4,23 @@ import Dishdetail from './DishDetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { View, Platform } from 'react-native';
+import {
+    View,
+    Platform,
+    Text,
+    Image,
+    StyleSheet,
+    SafeAreaView
+} from 'react-native';
 import { DISHES } from '../shared/dish';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+    createDrawerNavigator,
+    DrawerContentScrollView,
+    DrawerItemList
+} from '@react-navigation/drawer';
+import { Icon } from 'react-native-elements';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -90,6 +102,56 @@ function AboutNavigator() {
     );
 }
 
+function CustomDrawerContent(props) {
+    return (
+        <DrawerContentScrollView>
+            <SafeAreaView
+                style={styles.container}
+                forceInset={{ top: 'always', horizontal: 'never' }}
+            >
+                <View style={styles.drawerHeader}>
+                    <View style={{ flex: 1 }}>
+                        <Image
+                            source={require('./images/logo.png')}
+                            style={styles.drawerImage}
+                        />
+                    </View>
+                    <View style={{ flex: 2 }}>
+                        <Text style={styles.drawerHeaderText}>
+                            Ristorante Con Fusion
+                        </Text>
+                    </View>
+                </View>
+                <DrawerItemList {...props} />
+            </SafeAreaView>
+        </DrawerContentScrollView>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    drawerHeader: {
+        backgroundColor: '#512DA8',
+        height: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row'
+    },
+    drawerHeaderText: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    drawerImage: {
+        margin: 10,
+        width: 80,
+        height: 60
+    }
+});
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -115,7 +177,12 @@ class Main extends Component {
                 }}
             >
                 <NavigationContainer>
-                    <Drawer.Navigator initialRouteName="Home">
+                    <Drawer.Navigator
+                        initialRouteName="Home"
+                        drawerContent={(props) => (
+                            <CustomDrawerContent {...props} />
+                        )}
+                    >
                         <Drawer.Screen name="Home" component={HomeNavigator} />
                         <Drawer.Screen name="Menu" component={MenuNavigator} />
                         <Drawer.Screen
