@@ -39,7 +39,20 @@ function MenuNavigator() {
                 }
             }}
         >
-            <Stack.Screen name="Menu" component={Menu} />
+            <Stack.Screen
+                name="Menu"
+                component={Menu}
+                options={({ navigation }) => ({
+                    headerLeft: (
+                        <Icon
+                            name="menu"
+                            size={24}
+                            color="white"
+                            onPress={() => navigation.toggleDrawer()}
+                        />
+                    )
+                })}
+            />
             <Stack.Screen name="Dishdetail" component={Dishdetail} />
         </Stack.Navigator>
     );
@@ -59,7 +72,20 @@ function HomeNavigator() {
                 }
             }}
         >
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+                name="Home"
+                component={Home}
+                // options={({ navigation }) => ({
+                //     headerLeft: (
+                //         <Icon
+                //             name="menu"
+                //             size={24}
+                //             color="white"
+                //             onPress={() => navigation.toggleDrawer()}
+                //         />
+                //     )
+                // })}
+            />
         </Stack.Navigator>
     );
 }
@@ -68,15 +94,23 @@ function ContactNavigator() {
     return (
         <Stack.Navigator
             initialRouteName="Contact"
-            screenOptions={{
+            screenOptions={({ navigation }) => ({
                 headerStyle: {
                     backgroundColor: '#512DA8'
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff'
-                }
-            }}
+                },
+                headerLeft: (
+                    <Icon
+                        name="menu"
+                        size={24}
+                        color="white"
+                        onPress={() => navigation.toggleDrawer()}
+                    />
+                )
+            })}
         >
             <Stack.Screen name="Contact" component={Contact} />
         </Stack.Navigator>
@@ -87,15 +121,23 @@ function AboutNavigator() {
     return (
         <Stack.Navigator
             initialRouteName="About"
-            screenOptions={{
+            screenOptions={({ navigation }) => ({
                 headerStyle: {
                     backgroundColor: '#512DA8'
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     color: '#fff'
-                }
-            }}
+                },
+                headerLeft: (
+                    <Icon
+                        name="menu"
+                        size={24}
+                        color="white"
+                        onPress={() => navigation.toggleDrawer()}
+                    />
+                )
+            })}
         >
             <Stack.Screen name="About" component={About} />
         </Stack.Navigator>
@@ -182,16 +224,68 @@ class Main extends Component {
                         drawerContent={(props) => (
                             <CustomDrawerContent {...props} />
                         )}
+                        drawerStyle={{ backgroundColor: '#D1C4E9' }}
                     >
-                        <Drawer.Screen name="Home" component={HomeNavigator} />
-                        <Drawer.Screen name="Menu" component={MenuNavigator} />
+                        <Drawer.Screen
+                            name="Home"
+                            component={HomeNavigator}
+                            options={{
+                                drawerLabel: 'Home',
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                        name="home"
+                                        type="font-awesome"
+                                        size={24}
+                                        color={tintColor}
+                                    />
+                                )
+                            }}
+                        />
+                        <Drawer.Screen
+                            name="Menu"
+                            component={MenuNavigator}
+                            options={{
+                                drawerLabel: 'Menu',
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                        name="list"
+                                        type="font-awesome"
+                                        size={24}
+                                        color={tintColor}
+                                    />
+                                )
+                            }}
+                        />
                         <Drawer.Screen
                             name="Contact"
                             component={ContactNavigator}
+                            options={{
+                                title: 'Contact Us',
+                                drawerLabel: 'Contact Us',
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                        name="address-card"
+                                        type="font-awesome"
+                                        size={22}
+                                        color={tintColor}
+                                    />
+                                )
+                            }}
                         />
                         <Drawer.Screen
                             name="About"
                             component={AboutNavigator}
+                            options={{
+                                drawerLabel: 'About Us',
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                        name="info-circle"
+                                        type="font-awesome"
+                                        size={24}
+                                        color={tintColor}
+                                    />
+                                )
+                            }}
                         />
                     </Drawer.Navigator>
                 </NavigationContainer>
