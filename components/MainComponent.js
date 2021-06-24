@@ -43,7 +43,7 @@ function MenuNavigator() {
                 name="Menu"
                 component={Menu}
                 options={({ navigation }) => ({
-                    headerLeft: (
+                    headerLeft: () => (
                         <Icon
                             name="menu"
                             size={24}
@@ -75,16 +75,16 @@ function HomeNavigator() {
             <Stack.Screen
                 name="Home"
                 component={Home}
-                // options={({ navigation }) => ({
-                //     headerLeft: (
-                //         <Icon
-                //             name="menu"
-                //             size={24}
-                //             color="white"
-                //             onPress={() => navigation.toggleDrawer()}
-                //         />
-                //     )
-                // })}
+                options={({ navigation }) => ({
+                    headerLeft: () => (
+                        <Icon
+                            name="menu"
+                            size={24}
+                            color="white"
+                            onPress={() => navigation.toggleDrawer()}
+                        />
+                    )
+                })}
             />
         </Stack.Navigator>
     );
@@ -102,7 +102,7 @@ function ContactNavigator() {
                 headerTitleStyle: {
                     color: '#fff'
                 },
-                headerLeft: (
+                headerLeft: () => (
                     <Icon
                         name="menu"
                         size={24}
@@ -129,7 +129,7 @@ function AboutNavigator() {
                 headerTitleStyle: {
                     color: '#fff'
                 },
-                headerLeft: (
+                headerLeft: () => (
                     <Icon
                         name="menu"
                         size={24}
