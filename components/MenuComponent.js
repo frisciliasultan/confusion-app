@@ -4,6 +4,7 @@ import { Avatar, ListItem, Tile } from 'react-native-elements';
 import { DISHES } from '../shared/dish';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 const mapStateToProps = (state) => {
     return {
@@ -28,19 +29,6 @@ class Menu extends Component {
 
         const renderMenuItem = ({ item, index }) => {
             return (
-                // <ListItem
-                //     bottomDivider
-                //     onPress={() => navigate('Dishdetail', { dishId: item.id })}
-                // >
-                //     <Avatar source={require('./images/uthappizza.png')} />
-                //     <ListItem.Content>
-                //         <ListItem.Title>{item.name}</ListItem.Title>
-                //         <ListItem.Subtitle>
-                //             {item.description}
-                //         </ListItem.Subtitle>
-                //     </ListItem.Content>
-                //     <ListItem.Chevron />
-                // </ListItem>
                 <Tile
                     key={index}
                     title={item.name}
@@ -52,13 +40,23 @@ class Menu extends Component {
             );
         };
 
-        return (
-            <FlatList
-                data={this.props.dishes.dishes}
-                renderItem={renderMenuItem}
-                keyExtractor={(item) => item.id.toString()}
-            />
-        );
+        if (this.props.dishes.isLoading) {
+            return <Loading />;
+        } else if (this.props.dishes.errMess) {
+            return (
+                <View>
+                    <Text>{props.dishes.errMess}</Text>
+                </View>
+            );
+        } else {
+            return (
+                <FlatList
+                    data={this.props.dishes.dishes}
+                    renderItem={renderMenuItem}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+            );
+        }
     }
 }
 
