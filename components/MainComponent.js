@@ -4,6 +4,7 @@ import Dishdetail from './DishDetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
+import Reservation from './ReservationComponent';
 import {
     View,
     Platform,
@@ -167,6 +168,33 @@ function AboutNavigator() {
     );
 }
 
+function ReservationNavigator() {
+    return (
+        <Stack.Navigator
+            initialRouteName="Navigation"
+            screenOptions={({ navigation }) => ({
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                },
+                headerLeft: () => (
+                    <Icon
+                        name="menu"
+                        size={24}
+                        color="white"
+                        onPress={() => navigation.toggleDrawer()}
+                    />
+                )
+            })}
+        >
+            <Stack.Screen name="Reservation" component={Reservation} />
+        </Stack.Navigator>
+    );
+}
+
 function CustomDrawerContent(props) {
     return (
         <DrawerContentScrollView>
@@ -310,6 +338,21 @@ class Main extends Component {
                                 drawerIcon: ({ tintColor, focused }) => (
                                     <Icon
                                         name="info-circle"
+                                        type="font-awesome"
+                                        size={24}
+                                        color={tintColor}
+                                    />
+                                )
+                            }}
+                        />
+                        <Drawer.Screen
+                            name="Reservation"
+                            component={ReservationNavigator}
+                            options={{
+                                drawerLabel: 'Reserve Table',
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                        name="cutlery"
                                         type="font-awesome"
                                         size={24}
                                         color={tintColor}
