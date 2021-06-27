@@ -19,12 +19,13 @@ const mapStateToProps = (state) => {
 
 function RenderItem(props) {
     const item = props.item;
+    console.log(props, 'props');
     if (props.isLoading) {
         return <Loading />;
     } else if (props.errMess) {
         return (
             <View>
-                <Text>{props.erreMess}</Text>
+                <Text>{props.errMess}</Text>
             </View>
         );
     } else {
@@ -70,7 +71,7 @@ class Home extends Component {
                         )[0]
                     }
                     isLoading={this.props.dishes.isLoading}
-                    erreMess={this.props.dishes.erreMess}
+                    errMess={this.props.dishes.errMess}
                 />
                 <RenderItem
                     item={
@@ -79,7 +80,7 @@ class Home extends Component {
                         )[0]
                     }
                     isLoading={this.props.promotions.isLoading}
-                    erreMess={this.props.promotions.erreMess}
+                    errMess={this.props.promotions.errMess}
                 />
                 <RenderItem
                     item={
@@ -88,7 +89,7 @@ class Home extends Component {
                         )[0]
                     }
                     isLoading={this.props.leaders.isLoading}
-                    erreMess={this.props.leaders.erreMess}
+                    errMess={this.props.leaders.errMess}
                 />
             </ScrollView>
         );
