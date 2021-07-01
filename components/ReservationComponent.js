@@ -7,7 +7,8 @@ import {
     Picker,
     Switch,
     Button,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
@@ -22,6 +23,7 @@ class Reservation extends Component {
             date: '',
             showModal: false
         };
+        this.resetForm = this.resetForm.bind(this);
     }
 
     static navigationOptions = {
@@ -38,6 +40,8 @@ class Reservation extends Component {
     }
 
     resetForm() {
+        console.log('hi');
+        console.log(this);
         this.setState({
             guests: 1,
             smoking: false,
@@ -116,7 +120,25 @@ class Reservation extends Component {
                             accessibilityLabel="Learn more about this purple button"
                         />
                     </View>
-                    <Modal
+                    {this.state.showModal
+                        ? Alert.alert(
+                              'Your Reservation OK?',
+                              `Number of Guests: ${this.state.guests}\nSmoking? ${this.state.smoking}\nDate and Time: ${this.state.date}`,
+                              [
+                                  {
+                                      text: 'Cancel',
+                                      onPress: this.resetForm,
+                                      style: 'cancel'
+                                  },
+                                  {
+                                      text: 'OK',
+                                      onPress: this.resetForm
+                                  }
+                              ],
+                              { cancelable: false }
+                          )
+                        : null}
+                    {/* <Modal
                         animationType={'slide'}
                         transparent={false}
                         visible={this.state.showModal}
@@ -146,7 +168,7 @@ class Reservation extends Component {
                                 title="Close"
                             />
                         </View>
-                    </Modal>
+                    </Modal> */}
                 </Animatable.View>
             </ScrollView>
         );
