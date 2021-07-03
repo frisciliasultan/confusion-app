@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
+import { Permissions } from 'expo';
+import * as Notifications from 'expo-notifications';
 
 class Reservation extends Component {
     constructor(props) {
@@ -40,13 +42,69 @@ class Reservation extends Component {
     }
 
     resetForm() {
-        console.log('hi');
-        console.log(this);
         this.setState({
             guests: 1,
             smoking: false,
             date: '',
             showModal: false
+        });
+    }
+
+    async obtainNotificationPermission() {
+        let permission = await Notifications.getPermissionsAsync();
+        console.log(permission);
+        if (
+            !permission.granted ||
+            permission.ios?.status !=
+                Notifications.IosAuthorizationStatus.PROVISIONAL
+        ) {
+            console.log(permission.granted);
+            console.log(
+                permission.ios.status ===
+                    Notifications.IosAuthorizationStatus.PROVISIONAL
+            );
+            console.log(Notifications.IosAuthorizationStatus.PROVISIONAL);
+            console.log('grant?');
+            permission = await Notifications.requestPermissionsAsync({
+                android: {},
+                ios: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true
+                }
+            });
+            console.log('called', permission);
+
+            if (
+                !permission.granted ||
+                permission.ios?.status ===
+                    Notifications.IosAuthorizationStatus.PROVISIONAL
+            ) {
+                console.log('not granted');
+                Alert.alert('Permission not granted to show notifications');
+            }
+        }
+        console.log('last', permission);
+        return permission;
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+        Notifications.setNotificationHandler({
+            handleNotification: async () => ({
+                shouldShowAlert: true,
+                shouldPlaySound: true,
+                shouldSetBadge: false
+            })
+        });
+
+        Notifications.scheduleNotificationAsync({
+            content: {
+                title: 'Your Reservation',
+                body: 'Reservation for ' + date + ' requested'
+            },
+            trigger: null
         });
     }
 
@@ -132,43 +190,17 @@ class Reservation extends Component {
                                   },
                                   {
                                       text: 'OK',
-                                      onPress: this.resetForm
+                                      onPress: () => {
+                                          this.presentLocalNotification(
+                                              this.state.date
+                                          );
+                                          this.resetForm();
+                                      }
                                   }
                               ],
                               { cancelable: false }
                           )
                         : null}
-                    {/* <Modal
-                        animationType={'slide'}
-                        transparent={false}
-                        visible={this.state.showModal}
-                        onDismiss={() => this.toggleModal()}
-                        onRequestClose={() => this.toggleModal()}
-                    >
-                        <View style={styles.modal}>
-                            <Text style={styles.modalTitle}>
-                                Your Reservation
-                            </Text>
-                            <Text style={styles.modalText}>
-                                Number of Guests: {this.state.guests}
-                            </Text>
-                            <Text style={styles.modalText}>
-                                Smoking?: {this.state.smoking ? 'Yes' : 'No'}
-                            </Text>
-                            <Text style={styles.modalText}>
-                                Date and Time: {this.state.date}
-                            </Text>
-
-                            <Button
-                                onPress={() => {
-                                    this.toggleModal();
-                                    this.resetForm();
-                                }}
-                                color="#512DA8"
-                                title="Close"
-                            />
-                        </View>
-                    </Modal> */}
                 </Animatable.View>
             </ScrollView>
         );
