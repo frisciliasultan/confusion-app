@@ -96,6 +96,7 @@ function LoginNavigator() {
                 headerTitleStyle: {
                     color: '#fff'
                 },
+                title: 'Login',
                 headerLeft: () => (
                     <Icon
                         name="menu"
