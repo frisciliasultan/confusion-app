@@ -4,16 +4,17 @@ import {
     View,
     ScrollView,
     StyleSheet,
-    Picker,
     Switch,
     Button,
     Modal,
-    Alert
+    Alert,
+    Platform
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
-import { Permissions } from 'expo';
 import * as Notifications from 'expo-notifications';
+import * as Calendar from 'expo-calendar';
 
 class Reservation extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class Reservation extends Component {
     handleReservation() {
         console.log(JSON.stringify(this.state));
         this.toggleModal();
+        this.addReservationToCalendar(this.state.date);
     }
 
     resetForm() {
@@ -50,21 +52,94 @@ class Reservation extends Component {
         });
     }
 
+    async obtainCalendarPermission() {
+        let permission = await Calendar.getCalendarPermissionsAsync();
+
+        if (!permission.granted) {
+            permission = await Calendar.requestCalendarPermissionsAsync();
+
+            if (!permission.granted) {
+                Alert.alert('Permission not granted to show notifications');
+            }
+        }
+        return permission;
+    }
+
+    // async getDefaultCalendar() {
+    //     let defaultCalendar;
+
+    //     if (Platform.OS === 'ios') {
+    //         defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    //     } else {
+    //         const calendars = await Calendar.getCalendarsAsync(
+    //             Calendar.EntityTypes.EVENT
+    //         );
+    //         defaultCalendar = calendars.filter(
+    //             (each) => each.source.name === 'Default'
+    //         )[0];
+    //     }
+    //     console.log(defaultCalendar);
+    //     return defaultCalendar;
+    // }
+
+    async getDefaultCalendarId() {
+        let defaultCalendarId;
+
+        if (Platform.OS === 'ios') {
+            console.log(await Calendar.getDefaultCalendarAsync());
+            defaultCalendarId = (await Calendar.getDefaultCalendarAsync()).id;
+        } else {
+            const calendars = await Calendar.getCalendarsAsync(
+                Calendar.EntityTypes.EVENT
+            );
+            defaultCalendarId = calendars.filter(
+                (each) => each.source.name === 'Default'
+            )[0].id;
+        }
+        console.log(defaultCalendarId);
+        return defaultCalendarId;
+    }
+
+    async addReservationToCalendar(date) {
+        await this.obtainCalendarPermission();
+
+        // Get default calendar
+        const calendar = await this.getDefaultCalendarId();
+        console.log('calend', calendar);
+        // const defaultCalendarSource =
+        //     Platform.OS === 'ios'
+        //         ? await thisgetDefaultCalendarSource()
+        //         : { isLocalAccount: true, name: 'Expo Calendar' };
+
+        Calendar.createEventAsync(calendar, {
+            title: 'Con Fusion Table Reservation',
+            startDate: new Date(Date.parse(date)),
+            endDate: new Date(Date.parse(date) + 2 * 60 * 60 * 1000),
+            timeZone: 'Asia/Hong_Kong',
+            location:
+                '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+        });
+
+        // const newCalendarID = await Calendar.createCalendarAsync({
+        //     title: 'Expo Calendar',
+        //     color: 'blue',
+        //     entityType: Calendar.EntityTypes.EVENT,
+        //     sourceId: defaultCalendarSource.id,
+        //     source: defaultCalendarSource,
+        //     name: 'internalCalendarName',
+        //     ownerAccount: 'personal',
+        //     accessLevel: Calendar.CalendarAccessLevel.OWNER
+        // });
+    }
+
     async obtainNotificationPermission() {
         let permission = await Notifications.getPermissionsAsync();
-        console.log(permission);
+
         if (
             !permission.granted ||
             permission.ios?.status !=
                 Notifications.IosAuthorizationStatus.PROVISIONAL
         ) {
-            console.log(permission.granted);
-            console.log(
-                permission.ios.status ===
-                    Notifications.IosAuthorizationStatus.PROVISIONAL
-            );
-            console.log(Notifications.IosAuthorizationStatus.PROVISIONAL);
-            console.log('grant?');
             permission = await Notifications.requestPermissionsAsync({
                 android: {},
                 ios: {
@@ -74,18 +149,15 @@ class Reservation extends Component {
                     allowAnnouncements: true
                 }
             });
-            console.log('called', permission);
 
             if (
                 !permission.granted ||
                 permission.ios?.status ===
                     Notifications.IosAuthorizationStatus.PROVISIONAL
             ) {
-                console.log('not granted');
                 Alert.alert('Permission not granted to show notifications');
             }
         }
-        console.log('last', permission);
         return permission;
     }
 
